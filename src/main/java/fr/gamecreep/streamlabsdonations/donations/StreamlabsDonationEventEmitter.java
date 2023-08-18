@@ -8,19 +8,19 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 public class StreamlabsDonationEventEmitter {
     public StreamlabsDonationEventEmitter() {}
 
     public void onDonation(Donation donation) {
-        Player player = Bukkit.getPlayer("GameCreep35");
-
         String titleInfo = String.format("%s à donné %s !", donation.getDonorName(), donation.getFormattedAmount());
-        String lastDonation = String.format("Dernier don: %s > %s", donation.getDonorName(), donation.getFormattedAmount());
 
-        player.sendTitle(titleInfo, donation.getMessage());
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(lastDonation));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle(titleInfo, donation.getMessage());
 
-        Location location = player.getLocation();
-        player.getWorld().spawnEntity(location, EntityType.CREEPER);
+            Location location = player.getLocation();
+            player.getWorld().spawnEntity(location, EntityType.CREEPER);
+        }
     }
 }

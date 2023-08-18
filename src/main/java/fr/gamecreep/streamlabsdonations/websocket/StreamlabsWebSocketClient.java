@@ -11,7 +11,6 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
-import java.util.List;
 
 public class StreamlabsWebSocketClient {
     private final StreamlabsDonationEventEmitter donationEventEmitter = new StreamlabsDonationEventEmitter();
@@ -34,9 +33,7 @@ public class StreamlabsWebSocketClient {
 
             this.socket = IO.socket("https://sockets.streamlabs.com", options);
 
-            socket.on(Socket.EVENT_CONNECT, args1 -> {
-                Bukkit.getLogger().info("Loaded websocket");
-            });
+            socket.on(Socket.EVENT_CONNECT, args1 -> Bukkit.getLogger().info("Loaded websocket"));
 
             socket.on("event", args1 -> {
                 JSONArray eventData = (JSONArray) args1[0];

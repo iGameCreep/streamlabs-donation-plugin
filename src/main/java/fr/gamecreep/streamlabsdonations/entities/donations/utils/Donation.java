@@ -6,8 +6,8 @@ import java.math.BigDecimal;
 
 @Getter
 public class Donation implements Comparable<Donation> {
-    private String donorName;
-    private BigDecimal donationAmount;
+    private final String donorName;
+    private final BigDecimal donationAmount;
     private String formattedAmount;
     private String message;
 

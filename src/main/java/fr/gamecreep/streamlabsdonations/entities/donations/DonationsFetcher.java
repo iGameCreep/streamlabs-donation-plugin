@@ -1,7 +1,6 @@
 package fr.gamecreep.streamlabsdonations.entities.donations;
 
 import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donation;
-import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donor;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
