@@ -30,6 +30,7 @@ public class TestCommand implements CommandExecutor {
             new StreamlabsDonationEventEmitter().onDonation(donation);
             plugin.getDonationCache().updateCache(donation);
             plugin.getScoreBoardUtils().updateScoreboard();
+            return true;
         }
 
         return false;
