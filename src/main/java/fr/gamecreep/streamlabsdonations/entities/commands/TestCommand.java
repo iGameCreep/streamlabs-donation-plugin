@@ -22,7 +22,11 @@ public class TestCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String commandLabel, @NotNull String[] args) {
         if (commandSender instanceof Player) {
             if (args.length == 0) return false;
-            Donation donation = new Donation(args[0], new BigDecimal(args[1]), args[1] + "€", args[2]);
+            StringBuilder message = new StringBuilder(args[2]);
+            for (int arg = 3; arg < args.length; arg++) {
+                message.append(" ").append(args[arg]);
+            }
+            Donation donation = new Donation(args[0], new BigDecimal(args[1]), args[1] + "€", message.toString());
             new StreamlabsDonationEventEmitter().onDonation(donation);
             plugin.getDonationCache().updateCache(donation);
             plugin.getScoreBoardUtils().updateScoreboard();

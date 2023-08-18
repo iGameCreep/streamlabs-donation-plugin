@@ -6,4 +6,4 @@ load: STARTUP
 commands:
   test:
     description: Test command to simulate a donation through StreamLabs
-    usage: /test [donor-name] <money-amount>
+    usage: /test [donor-name] [money-amount] [message]
