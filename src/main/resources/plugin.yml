@@ -1,0 +1,8 @@
+name: StreamLabsDonations
+version: '${project.version}'
+main: fr.gamecreep.streamlabsdonations.StreamLabsDonations
+api-version: '1.20'
+load: STARTUP
+commands:
+  test:
+    description: test command
