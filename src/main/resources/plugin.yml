@@ -5,4 +5,5 @@ api-version: '1.20'
 load: STARTUP
 commands:
   test:
-    description: test command
+    description: Test command to simulate a donation through StreamLabs
+    usage: /test [donor-name] <money-amount>
