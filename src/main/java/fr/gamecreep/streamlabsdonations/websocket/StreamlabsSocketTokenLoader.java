@@ -1,5 +1,6 @@
 package fr.gamecreep.streamlabsdonations.websocket;
 
+import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -14,9 +15,10 @@ import java.util.concurrent.TimeUnit;
 
 public class StreamlabsSocketTokenLoader {
     private static final String TOKEN_ENDPOINT = "https://streamlabs.com/api/v2.0/socket/token";
-    private final StreamlabsWebSocketClient webSocketClient = new StreamlabsWebSocketClient();
+    private final StreamlabsWebSocketClient webSocketClient;
 
-    public StreamlabsSocketTokenLoader(String accessToken) {
+    public StreamlabsSocketTokenLoader(String accessToken, StreamLabsDonations plugin) {
+        this.webSocketClient = new StreamlabsWebSocketClient(plugin);
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
         Runnable tokenFetcher = () -> {
