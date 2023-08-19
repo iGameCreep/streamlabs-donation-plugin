@@ -9,8 +9,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.math.BigDecimal;
-
 public class TestCommand implements CommandExecutor {
     private final StreamLabsDonations plugin;
 
@@ -21,12 +19,12 @@ public class TestCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String commandLabel, @NotNull String[] args) {
         if (commandSender instanceof Player) {
-            if (args.length == 0) return false;
+            if (args.length < 3) return false;
             StringBuilder message = new StringBuilder(args[2]);
             for (int arg = 3; arg < args.length; arg++) {
                 message.append(" ").append(args[arg]);
             }
-            Donation donation = new Donation(args[0], new BigDecimal(args[1]), args[1] + "€", message.toString());
+            Donation donation = new Donation(args[0], Double.parseDouble(args[1]), args[1] + "€", message.toString());
             new StreamlabsDonationEventEmitter().onDonation(donation);
             plugin.getDonationCache().updateCache(donation);
             plugin.getScoreBoardUtils().updateScoreboard();

@@ -54,12 +54,10 @@ public final class StreamLabsDonations extends JavaPlugin {
         List<Donation> donationList = donationsFetcher.fetchDonations();
 
         this.donationCache.fetchAndUpdateTopDonations(donationList);
-
     }
 
     @Override
     public void onDisable() {
-        this.socketTokenLoader.endWebSocket();
         getLogger().info("Successfully stopped websocket and plugin !");
     }
 }

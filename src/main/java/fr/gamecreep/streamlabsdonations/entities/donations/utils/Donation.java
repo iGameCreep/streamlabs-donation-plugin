@@ -2,29 +2,22 @@ package fr.gamecreep.streamlabsdonations.entities.donations.utils;
 
 import lombok.Getter;
 
-import java.math.BigDecimal;
-
 @Getter
-public class Donation implements Comparable<Donation> {
+public class Donation {
     private final String donorName;
-    private final BigDecimal donationAmount;
+    private final double donationAmount;
     private String formattedAmount;
     private String message;
 
-    public Donation(String donorName, BigDecimal donationAmount, String formattedAmount, String message) {
+    public Donation(String donorName, double donationAmount, String formattedAmount, String message) {
         this.donorName = donorName;
         this.donationAmount = donationAmount;
         this.formattedAmount = formattedAmount;
         this.message = message;
     }
 
-    public Donation(String donorName, BigDecimal donationAmount) {
+    public Donation(String donorName, double donationAmount) {
         this.donorName = donorName;
         this.donationAmount = donationAmount;
-    }
-
-    @Override
-    public int compareTo(Donation other) {
-        return donationAmount.compareTo(other.donationAmount);
     }
 }

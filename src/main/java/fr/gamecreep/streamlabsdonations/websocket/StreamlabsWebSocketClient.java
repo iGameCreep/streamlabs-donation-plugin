@@ -9,19 +9,18 @@ import org.bukkit.Bukkit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
 
 public class StreamlabsWebSocketClient {
     private final StreamlabsDonationEventEmitter donationEventEmitter = new StreamlabsDonationEventEmitter();
-    private Socket socket;
+    private Socket socket = null;
     private final StreamLabsDonations plugin;
     public StreamlabsWebSocketClient(StreamLabsDonations plugin) {
         this.plugin = plugin;
     }
 
     public void load(String socketToken) {
-        this.socket.close();
+        this.endWebSocket();
         this.loadWebSocket(socketToken);
     }
 
@@ -33,46 +32,41 @@ public class StreamlabsWebSocketClient {
 
             this.socket = IO.socket("https://sockets.streamlabs.com", options);
 
-            socket.on(Socket.EVENT_CONNECT, args1 -> Bukkit.getLogger().info("Loaded websocket"));
+            socket.on(Socket.EVENT_CONNECT, args -> Bukkit.getLogger().info("Loaded websocket"));
 
-            socket.on("event", args1 -> {
-                JSONArray eventData = (JSONArray) args1[0];
+            socket.on("event", args -> {
+                JSONObject eventData = (JSONObject) args[0];
 
-                for (int i = 0; i < eventData.length(); i++) {
-                    JSONObject event = eventData.getJSONObject(i);
-                    String eventType = event.getString("type");
-
-                    if (eventType.equals("donation")) {
-                        handleDonationEvent(event);
-                    }
-                }
+                if (eventData.getString("type").equals("donation")) handleDonationEvent(eventData);
             });
 
             socket.connect();
 
             Thread.sleep(Long.MAX_VALUE);
         } catch (URISyntaxException | InterruptedException e) {
-            Bukkit.getLogger().warning("Could not load teh websocket");
+            Bukkit.getLogger().warning("Could not load the websocket");
             e.printStackTrace();
         }
     }
 
     public void endWebSocket() {
-        this.socket.close();
+        if (this.socket != null && this.socket.isActive()) this.socket.close();
     }
 
     private void handleDonationEvent(JSONObject event) {
         JSONArray message = event.getJSONArray("message");
-        JSONObject donationData = message.getJSONObject(0);
+        for (int i = 0; i < message.length(); i++) {
+            JSONObject donationData = message.getJSONObject(i);
 
-        String donorName = donationData.getString("name");
-        String donationAmount = donationData.getString("amount");
-        String formattedAmount = donationData.getString("formatted_amount");
-        String donationMessage = donationData.getString("message");
+            String donorName = donationData.getString("name");
+            double donationAmount = donationData.getDouble("amount");
+            String formattedAmount = donationData.getString("formatted_amount");
+            String donationMessage = donationData.getString("message");
 
-        Donation donation = new Donation(donorName, new BigDecimal(donationAmount), formattedAmount, donationMessage);
-        this.donationEventEmitter.onDonation(donation);
-        this.plugin.getDonationCache().updateCache(donation);
-        this.plugin.getScoreBoardUtils().updateScoreboard();
+            Donation donation = new Donation(donorName, donationAmount, formattedAmount, donationMessage);
+            Bukkit.getScheduler().runTask(this.plugin, () -> this.donationEventEmitter.onDonation(donation));
+            this.plugin.getDonationCache().updateCache(donation);
+        }
+        Bukkit.getScheduler().runTask(this.plugin, () -> this.plugin.getScoreBoardUtils().updateScoreboard());
     }
 }

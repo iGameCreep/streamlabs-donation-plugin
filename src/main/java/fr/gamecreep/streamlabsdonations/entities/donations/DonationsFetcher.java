@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 public class DonationsFetcher {
@@ -39,7 +38,7 @@ public class DonationsFetcher {
                     JSONObject donationData = donationArray.getJSONObject(i);
                     Donation donation = new Donation(
                             donationData.getString("name"),
-                            new BigDecimal(donationData.getString("amount"))
+                            donationData.getDouble("amount")
                     );
                     donations.add(donation);
                 }

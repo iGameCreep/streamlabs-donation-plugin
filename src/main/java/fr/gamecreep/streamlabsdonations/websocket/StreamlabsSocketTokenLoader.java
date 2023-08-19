@@ -31,7 +31,7 @@ public class StreamlabsSocketTokenLoader {
         };
 
         // Schedule the tokenFetcher to run every minute
-        scheduler.scheduleAtFixedRate(tokenFetcher, 0, 1, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(tokenFetcher, 0, 10, TimeUnit.SECONDS);
     }
 
     private static String getSocketToken(String accessToken) {
@@ -54,11 +54,6 @@ public class StreamlabsSocketTokenLoader {
     }
 
     private void loadWebSocket(String socketToken) {
-        this.webSocketClient.endWebSocket();
         this.webSocketClient.load(socketToken);
-    }
-
-    public void endWebSocket() {
-        this.webSocketClient.endWebSocket();
     }
 }

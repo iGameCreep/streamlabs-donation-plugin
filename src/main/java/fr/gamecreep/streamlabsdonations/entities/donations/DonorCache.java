@@ -3,12 +3,11 @@ package fr.gamecreep.streamlabsdonations.entities.donations;
 import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donation;
 import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donor;
 
-import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class DonorCache {
-    private final Map<String, BigDecimal> donorTotalAmounts;
+    private final Map<String, Double> donorTotalAmounts;
 
     public DonorCache() {
         donorTotalAmounts = new HashMap<>();
@@ -16,12 +15,12 @@ public class DonorCache {
 
     public void updateDonation(Donation donation) {
         String donorName = donation.getDonorName();
-        BigDecimal donationAmount = donation.getDonationAmount();
+        double donationAmount = donation.getDonationAmount();
 
-        donorTotalAmounts.put(donorName, donorTotalAmounts.getOrDefault(donorName, BigDecimal.ZERO).add(donationAmount));
+        donorTotalAmounts.put(donorName, donorTotalAmounts.getOrDefault(donorName, 0.0) + donationAmount);
     }
 
-    public Map<String, BigDecimal> getDonorTotalAmounts() {
+    public Map<String, Double> getDonorTotalAmounts() {
         return donorTotalAmounts;
     }
 

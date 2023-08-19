@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ScoreBoardUtils {
     private final StreamLabsDonations plugin;
+    private final Object scoreboardLock = new Object(); // Lock object for synchronization
 
     public ScoreBoardUtils(StreamLabsDonations plugin) {
         this.plugin = plugin;
@@ -26,16 +27,22 @@ public class ScoreBoardUtils {
 
         for (Donor donor : topDonors) {
             Score score = objective.getScore(donor.getDonorName());
-            score.setScore(donor.getDonationAmount().intValue());
+            score.setScore((int) donor.getDonationAmount());
+        }
+
+        synchronized (scoreboardLock) {
+            player.setScoreboard(board);
         }
 
         player.setScoreboard(board);
     }
 
     public void updateScoreboard() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
-            createScoreboard(player);
+        synchronized (scoreboardLock) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
+                createScoreboard(player);
+            }
         }
     }
 }
