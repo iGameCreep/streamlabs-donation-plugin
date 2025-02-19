@@ -30,8 +30,7 @@ public class StreamlabsSocketTokenLoader {
             }
         };
 
-        // Schedule the tokenFetcher to run every minute
-        scheduler.scheduleAtFixedRate(tokenFetcher, 0, 10, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(tokenFetcher, 0, 5, TimeUnit.MINUTES);
     }
 
     private static String getSocketToken(String accessToken) {

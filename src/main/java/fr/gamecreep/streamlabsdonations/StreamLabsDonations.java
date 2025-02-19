@@ -1,6 +1,6 @@
 package fr.gamecreep.streamlabsdonations;
 
-import fr.gamecreep.streamlabsdonations.entities.commands.TestCommand;
+import fr.gamecreep.streamlabsdonations.entities.commands.HelpCommand;
 import fr.gamecreep.streamlabsdonations.entities.donations.DonorCache;
 import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donation;
 import fr.gamecreep.streamlabsdonations.entities.donations.DonationCache;
@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public final class StreamLabsDonations extends JavaPlugin {
@@ -39,7 +40,7 @@ public final class StreamLabsDonations extends JavaPlugin {
     }
 
     private void loadCommands() {
-        getCommand("test").setExecutor(new TestCommand(this));
+        Objects.requireNonNull(getCommand("test")).setExecutor(new HelpCommand());
     }
     private void loadEvents() {
         getServer().getPluginManager().registerEvents(new PlayerJoinLeave(this), this);
