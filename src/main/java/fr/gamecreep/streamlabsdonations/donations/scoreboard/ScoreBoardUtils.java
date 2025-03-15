@@ -1,7 +1,7 @@
-package fr.gamecreep.streamlabsdonations.entities.donations.scoreboard;
+package fr.gamecreep.streamlabsdonations.donations.scoreboard;
 
 import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donor;
+import fr.gamecreep.streamlabsdonations.donations.entities.Donor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -21,6 +21,7 @@ public class ScoreBoardUtils {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
 
+        //TODO: fix this
         Objective objective = board.registerNewObjective("Top 5 Donateurs", "donortop");
         objective.setDisplayName("Top 5 Donateurs");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);

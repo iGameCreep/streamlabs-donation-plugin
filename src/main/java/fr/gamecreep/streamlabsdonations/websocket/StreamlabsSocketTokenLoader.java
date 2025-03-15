@@ -1,59 +1,60 @@
 package fr.gamecreep.streamlabsdonations.websocket;
 
+import com.google.gson.Gson;
 import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import fr.gamecreep.streamlabsdonations.config.SecretsFile;
 import org.bukkit.Bukkit;
 import org.json.JSONObject;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 public class StreamlabsSocketTokenLoader {
+
     private static final String TOKEN_ENDPOINT = "https://streamlabs.com/api/v2.0/socket/token";
-    private final StreamlabsWebSocketClient webSocketClient;
+    private final Gson gson = new Gson();
 
-    public StreamlabsSocketTokenLoader(String accessToken, StreamLabsDonations plugin) {
-        this.webSocketClient = new StreamlabsWebSocketClient(plugin);
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    public StreamlabsSocketTokenLoader(final StreamLabsDonations plugin) {
+        final StreamlabsWebSocketClient webSocketClient = new StreamlabsWebSocketClient(plugin);
+        try {
+            final SecretsFile secrets = this.getSecrets();
 
-        Runnable tokenFetcher = () -> {
-            String socketToken = getSocketToken(accessToken);
-            if (socketToken != null) {
-                this.loadWebSocket(socketToken);
-            } else {
-                Bukkit.getLogger().warning("Could not get websocket token");
+            if (secrets.getAccessToken() != null) {
+                webSocketClient.load(this.getSocketToken(secrets.getAccessToken()));
             }
-        };
-
-        // Schedule the tokenFetcher to run every minute
-        scheduler.scheduleAtFixedRate(tokenFetcher, 0, 10, TimeUnit.SECONDS);
+        } catch (FileNotFoundException e) {
+            Bukkit.getLogger().warning("Could not get websocket token");
+        }
     }
 
-    private static String getSocketToken(String accessToken) {
-        try {
-            CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet(TOKEN_ENDPOINT);
+    private SecretsFile getSecrets() throws FileNotFoundException {
+        // TODO: Rename plugin to FundraiserFusion bc else this wont work lol
+        final String fileName = "plugins" + File.separator + "FundraiserFusion" + File.separator + "secrets.json";
+        return this.gson.fromJson(new FileReader(fileName), SecretsFile.class);
+    }
 
-            httpGet.setHeader("Authorization", "Bearer " + accessToken);
+    private String getSocketToken(final String accessToken) {
+        try (final HttpClient client = HttpClient.newHttpClient()) {
+            final HttpRequest request = HttpRequest.newBuilder(URI.create(TOKEN_ENDPOINT))
+                    .GET()
+                    .setHeader("Accept", "application/json")
+                    .setHeader("Authorization", "Bearer " + accessToken)
+                    .build();
 
-            try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
-                String responseBody = EntityUtils.toString(response.getEntity());
-                JSONObject jsonObject = new JSONObject(responseBody);
-                return jsonObject.getString("socket_token");
-            }
-        } catch (Exception e) {
+            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            final JSONObject jsonObject = new JSONObject(response.body());
+            return jsonObject.getString("socket_token");
+        } catch (final Exception e) {
+            Thread.currentThread().interrupt();
             Bukkit.getLogger().warning("Could not get websocket token");
             e.printStackTrace();
         }
-        return null;
-    }
 
-    private void loadWebSocket(String socketToken) {
-        this.webSocketClient.load(socketToken);
+        return null;
     }
 }

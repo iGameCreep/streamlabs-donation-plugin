@@ -1,7 +1,7 @@
-package fr.gamecreep.streamlabsdonations.entities.donations;
+package fr.gamecreep.streamlabsdonations.donations;
 
 import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donation;
+import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
 
 import java.util.ArrayList;
 import java.util.Collections;

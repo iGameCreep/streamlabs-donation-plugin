@@ -1,8 +1,8 @@
-package fr.gamecreep.streamlabsdonations.entities.commands;
+package fr.gamecreep.streamlabsdonations.commands;
 
 import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
 import fr.gamecreep.streamlabsdonations.donations.StreamlabsDonationEventEmitter;
-import fr.gamecreep.streamlabsdonations.entities.donations.utils.Donation;
+import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

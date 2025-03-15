@@ -1,4 +1,4 @@
-package fr.gamecreep.streamlabsdonations.entities.events;
+package fr.gamecreep.streamlabsdonations.events;
 
 import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
 import org.bukkit.event.EventHandler;
