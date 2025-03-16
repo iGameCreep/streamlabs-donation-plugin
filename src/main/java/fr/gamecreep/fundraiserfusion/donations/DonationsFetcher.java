@@ -1,9 +1,9 @@
-package fr.gamecreep.streamlabsdonations.donations;
+package fr.gamecreep.fundraiserfusion.donations;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

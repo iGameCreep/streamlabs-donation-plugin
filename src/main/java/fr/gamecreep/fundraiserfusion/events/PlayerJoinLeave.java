@@ -1,14 +1,14 @@
-package fr.gamecreep.streamlabsdonations.events;
+package fr.gamecreep.fundraiserfusion.events;
 
-import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
+import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinLeave implements Listener {
-    private final StreamLabsDonations plugin;
+    private final FundraiserFusion plugin;
 
-    public PlayerJoinLeave(StreamLabsDonations plugin) {
+    public PlayerJoinLeave(FundraiserFusion plugin) {
         this.plugin = plugin;
     }
 

@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fr.gamecreep</groupId>
-    <artifactId>StreamLabsDonations</artifactId>
+    <artifactId>FundraiserFusion</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>StreamLabsDonations</name>
+    <name>FundraiserFusion</name>
 
     <properties>
         <java.version>1.8</java.version>

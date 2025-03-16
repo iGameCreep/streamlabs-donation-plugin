@@ -1,4 +1,4 @@
 .idea
 target
 *.iml
-src/main/java/fr/gamecreep/streamlabsdonations/donations/events/Donation40.java
+src/main/java/fr/gamecreep/fundraiserfusion/donations/events/Donation40.java

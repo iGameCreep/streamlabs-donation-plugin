@@ -1,7 +1,7 @@
-package fr.gamecreep.streamlabsdonations.donations.scoreboard;
+package fr.gamecreep.fundraiserfusion.donations.scoreboard;
 
-import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donor;
+import fr.gamecreep.fundraiserfusion.FundraiserFusion;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -9,10 +9,10 @@ import org.bukkit.scoreboard.*;
 import java.util.List;
 
 public class ScoreBoardUtils {
-    private final StreamLabsDonations plugin;
+    private final FundraiserFusion plugin;
     private final Object scoreboardLock = new Object(); // Lock object for synchronization
 
-    public ScoreBoardUtils(StreamLabsDonations plugin) {
+    public ScoreBoardUtils(FundraiserFusion plugin) {
         this.plugin = plugin;
     }
 

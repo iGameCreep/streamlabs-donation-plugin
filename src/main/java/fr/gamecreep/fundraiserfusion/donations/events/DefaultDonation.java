@@ -1,4 +1,4 @@
-package fr.gamecreep.streamlabsdonations.donations.events;
+package fr.gamecreep.fundraiserfusion.donations.events;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package fr.gamecreep.streamlabsdonations.donations.entities.api;
+package fr.gamecreep.fundraiserfusion.donations.entities.api;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;

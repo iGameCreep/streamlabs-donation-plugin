@@ -1,7 +1,7 @@
-package fr.gamecreep.streamlabsdonations.donations;
+package fr.gamecreep.fundraiserfusion.donations;
 
-import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donor;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donor;
 
 import java.util.*;
 import java.util.stream.Collectors;

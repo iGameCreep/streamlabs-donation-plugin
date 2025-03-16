@@ -1,4 +1,4 @@
-package fr.gamecreep.streamlabsdonations.donations.entities;
+package fr.gamecreep.fundraiserfusion.donations.entities;
 
 import lombok.Getter;
 

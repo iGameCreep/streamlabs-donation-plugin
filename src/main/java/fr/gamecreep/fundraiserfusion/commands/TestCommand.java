@@ -1,8 +1,8 @@
-package fr.gamecreep.streamlabsdonations.commands;
+package fr.gamecreep.fundraiserfusion.commands;
 
-import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import fr.gamecreep.streamlabsdonations.donations.StreamlabsDonationEventEmitter;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
+import fr.gamecreep.fundraiserfusion.FundraiserFusion;
+import fr.gamecreep.fundraiserfusion.donations.StreamlabsDonationEventEmitter;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class TestCommand implements CommandExecutor {
-    private final StreamLabsDonations plugin;
+    private final FundraiserFusion plugin;
 
-    public TestCommand(StreamLabsDonations plugin) {
+    public TestCommand(FundraiserFusion plugin) {
         this.plugin = plugin;
     }
 

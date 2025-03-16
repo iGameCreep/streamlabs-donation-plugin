@@ -1,10 +1,10 @@
-package fr.gamecreep.streamlabsdonations.websocket;
+package fr.gamecreep.fundraiserfusion.websocket;
 
 import com.google.gson.Gson;
-import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import fr.gamecreep.streamlabsdonations.donations.StreamlabsDonationEventEmitter;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
-import fr.gamecreep.streamlabsdonations.donations.entities.api.DonationEvent;
+import fr.gamecreep.fundraiserfusion.FundraiserFusion;
+import fr.gamecreep.fundraiserfusion.donations.StreamlabsDonationEventEmitter;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
+import fr.gamecreep.fundraiserfusion.donations.entities.api.DonationEvent;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.engineio.client.transports.WebSocket;
@@ -17,10 +17,10 @@ public class StreamlabsWebSocketClient {
     private final Gson gson = new Gson();
 
     private final StreamlabsDonationEventEmitter donationEventEmitter = new StreamlabsDonationEventEmitter();
-    private final StreamLabsDonations plugin;
+    private final FundraiserFusion plugin;
     private Socket socket = null;
 
-    public StreamlabsWebSocketClient(StreamLabsDonations plugin) {
+    public StreamlabsWebSocketClient(FundraiserFusion plugin) {
         this.plugin = plugin;
     }
 

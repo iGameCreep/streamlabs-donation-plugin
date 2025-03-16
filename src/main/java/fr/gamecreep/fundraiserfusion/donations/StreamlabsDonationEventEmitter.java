@@ -1,7 +1,7 @@
-package fr.gamecreep.streamlabsdonations.donations;
+package fr.gamecreep.fundraiserfusion.donations;
 
-import fr.gamecreep.streamlabsdonations.donations.events.*;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
+import fr.gamecreep.fundraiserfusion.donations.events.*;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

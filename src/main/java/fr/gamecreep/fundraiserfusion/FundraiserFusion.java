@@ -1,21 +1,21 @@
-package fr.gamecreep.streamlabsdonations;
+package fr.gamecreep.fundraiserfusion;
 
-import fr.gamecreep.streamlabsdonations.commands.TestCommand;
-import fr.gamecreep.streamlabsdonations.donations.DonorCache;
-import fr.gamecreep.streamlabsdonations.donations.entities.Donation;
-import fr.gamecreep.streamlabsdonations.donations.DonationCache;
-import fr.gamecreep.streamlabsdonations.donations.DonationsFetcher;
-import fr.gamecreep.streamlabsdonations.donations.scoreboard.ScoreBoardUtils;
-import fr.gamecreep.streamlabsdonations.events.PlayerJoinLeave;
-import fr.gamecreep.streamlabsdonations.websocket.StreamlabsSocketTokenLoader;
+import fr.gamecreep.fundraiserfusion.commands.TestCommand;
+import fr.gamecreep.fundraiserfusion.donations.DonorCache;
+import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
+import fr.gamecreep.fundraiserfusion.donations.DonationCache;
+import fr.gamecreep.fundraiserfusion.donations.DonationsFetcher;
+import fr.gamecreep.fundraiserfusion.donations.scoreboard.ScoreBoardUtils;
+import fr.gamecreep.fundraiserfusion.events.PlayerJoinLeave;
+import fr.gamecreep.fundraiserfusion.websocket.StreamlabsSocketTokenLoader;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
 @Getter
-public final class StreamLabsDonations extends JavaPlugin {
-    private StreamlabsSocketTokenLoader socketTokenLoader = new StreamlabsSocketTokenLoader(this);
+public final class FundraiserFusion extends JavaPlugin {
+    private final StreamlabsSocketTokenLoader socketTokenLoader = new StreamlabsSocketTokenLoader(this);
     private DonationCache donationCache;
     private DonorCache donorCache;
     private ScoreBoardUtils scoreBoardUtils;

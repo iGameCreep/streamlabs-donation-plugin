@@ -1,8 +1,8 @@
-package fr.gamecreep.streamlabsdonations.websocket;
+package fr.gamecreep.fundraiserfusion.websocket;
 
 import com.google.gson.Gson;
-import fr.gamecreep.streamlabsdonations.StreamLabsDonations;
-import fr.gamecreep.streamlabsdonations.config.SecretsFile;
+import fr.gamecreep.fundraiserfusion.FundraiserFusion;
+import fr.gamecreep.fundraiserfusion.config.SecretsFile;
 import org.bukkit.Bukkit;
 import org.json.JSONObject;
 
@@ -19,7 +19,7 @@ public class StreamlabsSocketTokenLoader {
     private static final String TOKEN_ENDPOINT = "https://streamlabs.com/api/v2.0/socket/token";
     private final Gson gson = new Gson();
 
-    public StreamlabsSocketTokenLoader(final StreamLabsDonations plugin) {
+    public StreamlabsSocketTokenLoader(final FundraiserFusion plugin) {
         final StreamlabsWebSocketClient webSocketClient = new StreamlabsWebSocketClient(plugin);
         try {
             final SecretsFile secrets = this.getSecrets();

@@ -1,6 +1,6 @@
-name: StreamLabsDonations
+name: FundraiserFusion
 version: '${project.version}'
-main: fr.gamecreep.streamlabsdonations.StreamLabsDonations
+main: fr.gamecreep.fundraiserfusion.FundraiserFusion
 api-version: '1.21.4'
 load: STARTUP
 commands:

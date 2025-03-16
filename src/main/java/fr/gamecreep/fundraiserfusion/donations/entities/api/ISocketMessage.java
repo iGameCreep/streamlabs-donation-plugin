@@ -1,4 +1,4 @@
-package fr.gamecreep.streamlabsdonations.donations.entities.api;
+package fr.gamecreep.fundraiserfusion.donations.entities.api;
 
 import java.util.List;
 
