@@ -18,18 +18,23 @@ public class DonationEvent {
     @AllArgsConstructor
     @Getter
     public static class DonationMessage {
+        private int id;
         private String name;
-        private int months;
+        private double amount;
+        private String formattedAmount;
         private String message;
-        private String emotes;
-        @SerializedName("sub_plan")
-        private String subPlan;
-        @SerializedName("sub_plan_name")
-        private String subPlanName;
-        @SerializedName("sub_type")
-        private String subType;
-
+        private String currency;
+        private To to;
+        private String from;
+        @SerializedName("from_user_id")
+        private String fromUserId;
         @SerializedName("_id")
-        private String id;
+        private String idString;
+
+        @AllArgsConstructor
+        @Getter
+        public static class To {
+            private String name;
+        }
     }
 }

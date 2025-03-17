@@ -2,17 +2,22 @@ package fr.gamecreep.fundraiserfusion.donations;
 
 import fr.gamecreep.fundraiserfusion.donations.events.*;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class StreamlabsDonationEventEmitter {
-    public void onDonation(Donation donation) {
-        String titleInfo = String.format("%s à donné %s !", donation.getDonorName(), donation.getFormattedAmount());
+    public void onDonation(final Donation donation) {
+        final String titleInfo = String.format("%s gave %s !", donation.getDonorName(), donation.getFormattedAmount());
+        final Title title = Title.title(Component.text(titleInfo), Component.text(donation.getMessage()));
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            //TODO: fix this
-            player.sendTitle(titleInfo, donation.getMessage());
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            player.showTitle(title);
+
             double amount = donation.getDonationAmount();
+
+            // TODO: Implement actual config for donations according to website => https://github.com/iGameCreep/FundraiserFusion-Website
 
             if (amount > 50) new Donation50(player);
             //TODO: figure out why was this class removed; anyway wont be used in future

@@ -1,7 +1,8 @@
-package fr.gamecreep.fundraiserfusion.donations.scoreboard;
+package fr.gamecreep.fundraiserfusion.utils;
 
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -9,25 +10,24 @@ import org.bukkit.scoreboard.*;
 import java.util.List;
 
 public class ScoreBoardUtils {
-    private final FundraiserFusion plugin;
     private final Object scoreboardLock = new Object(); // Lock object for synchronization
 
-    public ScoreBoardUtils(FundraiserFusion plugin) {
+    private final FundraiserFusion plugin;
+
+    public ScoreBoardUtils(final FundraiserFusion plugin) {
         this.plugin = plugin;
     }
 
-    public void createScoreboard(Player player) {
-        List<Donor> topDonors = plugin.getDonorCache().getTopDonors(5);
-        ScoreboardManager manager = Bukkit.getScoreboardManager();
-        Scoreboard board = manager.getNewScoreboard();
+    public void createScoreboard(final Player player) {
+        final List<Donor> topDonors = this.plugin.getTopDonors(5);
+        final Scoreboard board = this.plugin.getServer().getScoreboardManager().getNewScoreboard();
 
-        //TODO: fix this
-        Objective objective = board.registerNewObjective("Top 5 Donateurs", "donortop");
-        objective.setDisplayName("Top 5 Donateurs");
+        final Objective objective = board.registerNewObjective("donortop", Criteria.create("donortop"), Component.text("Top 5 Donateurs"));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
-        for (Donor donor : topDonors) {
-            Score score = objective.getScore(donor.getDonorName());
+        Score score;
+        for (final Donor donor : topDonors) {
+            score = objective.getScore(donor.getDonorName());
             score.setScore((int) donor.getDonationAmount());
         }
 

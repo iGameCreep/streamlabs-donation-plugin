@@ -1,23 +1,21 @@
 package fr.gamecreep.fundraiserfusion.donations.entities;
 
+import com.google.gson.annotations.SerializedName;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 public class Donation {
+    @SerializedName("name")
     private final String donorName;
+    @SerializedName("amount")
     private final double donationAmount;
-    private String formattedAmount;
+    private String currency;
     private String message;
 
-    public Donation(String donorName, double donationAmount, String formattedAmount, String message) {
-        this.donorName = donorName;
-        this.donationAmount = donationAmount;
-        this.formattedAmount = formattedAmount;
-        this.message = message;
-    }
-
-    public Donation(String donorName, double donationAmount) {
-        this.donorName = donorName;
-        this.donationAmount = donationAmount;
+    public String getFormattedAmount() {
+        return String.format("%s$%s", this.currency, this.donationAmount);
     }
 }
