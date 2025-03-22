@@ -7,7 +7,6 @@ import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.config.SecretsFile;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -19,7 +18,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-@Slf4j(topic = "StreamLabs-Loader")
 public class StreamlabsSocketTokenLoader {
 
     private static final String DONATIONS_ENDPOINT = "https://streamlabs.com/api/v2.0/donations";
@@ -41,7 +39,7 @@ public class StreamlabsSocketTokenLoader {
                 webSocketClient.load(this.getSocketToken(secrets.getAccessToken()));
             }
         } catch (FileNotFoundException e) {
-            log.warn("Could not load secrets file. Please make sure it has been generated correctly.");
+            this.plugin.getLogger().warning("Could not load secrets file. Please make sure it has been generated correctly.");
         }
 
         return webSocketClient;
@@ -65,10 +63,10 @@ public class StreamlabsSocketTokenLoader {
                 JsonObject jsonResponse = gson.fromJson(response.body(), JsonObject.class);
                 return gson.fromJson(jsonResponse.getAsJsonArray("data"), new TypeToken<List<Donation>>() {}.getType());
             } else {
-                log.warn("Failed to fetch donations: HTTP error code {}", response.statusCode());
+                this.plugin.getLogger().warning("Failed to fetch donations: HTTP error code " + response.statusCode());
             }
         } catch (Exception e) {
-            log.warn("Could not retrieve donations.");
+            this.plugin.getLogger().warning("Could not retrieve donations.");
         }
 
         return List.of();
@@ -93,11 +91,11 @@ public class StreamlabsSocketTokenLoader {
                 return jsonObject.getString("socket_token");
                 //TODO: Save token in file or idk
             } else {
-                log.warn("Unable to fetch socket token.");
+                this.plugin.getLogger().warning("Unable to fetch socket token.");
             }
         } catch (final Exception e) {
             Thread.currentThread().interrupt();
-            log.warn("Could not get websocket token");
+            this.plugin.getLogger().warning("Could not get websocket token");
         }
 
         return null;

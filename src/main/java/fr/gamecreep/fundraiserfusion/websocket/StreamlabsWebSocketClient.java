@@ -7,11 +7,9 @@ import fr.gamecreep.fundraiserfusion.donations.entities.api.DonationEvent;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.engineio.client.transports.WebSocket;
-import lombok.extern.slf4j.Slf4j;
 
 import java.net.URISyntaxException;
 
-@Slf4j(topic = "StreamLabs-WS")
 public class StreamlabsWebSocketClient {
 
     private static final String WEBSOCKET_ENDPOINT = "https://sockets.streamlabs.com";
@@ -37,7 +35,7 @@ public class StreamlabsWebSocketClient {
 
             this.socket = IO.socket(WEBSOCKET_ENDPOINT, options);
 
-            socket.on(Socket.EVENT_CONNECT, args -> log.info("Loaded websocket"));
+            socket.on(Socket.EVENT_CONNECT, args -> this.plugin.getLogger().info("Loaded websocket"));
 
             socket.on("event", args -> {
                 if (args.length > 0 && args[0] != null) {
@@ -48,7 +46,7 @@ public class StreamlabsWebSocketClient {
 
             socket.connect();
         } catch (URISyntaxException e) {
-            log.warn("Unable to load the websocket.");
+            this.plugin.getLogger().warning("Unable to load the websocket.");
         }
     }
 

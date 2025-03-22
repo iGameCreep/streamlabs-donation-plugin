@@ -2,7 +2,7 @@ name: FundraiserFusion
 version: '${project.version}'
 main: fr.gamecreep.fundraiserfusion.FundraiserFusion
 api-version: '1.21.4'
-load: STARTUP
+load: POSTWORLD
 commands:
   test:
     description: Test command to simulate a donation through StreamLabs

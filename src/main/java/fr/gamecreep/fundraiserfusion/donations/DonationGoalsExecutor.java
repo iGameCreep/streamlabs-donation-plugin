@@ -1,7 +1,7 @@
 package fr.gamecreep.fundraiserfusion.donations;
 
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
-import fr.gamecreep.fundraiserfusion.config.DonationEventData;
+import fr.gamecreep.fundraiserfusion.donations.entities.DonationEventData;
 import fr.gamecreep.fundraiserfusion.donations.events.*;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import org.bukkit.Bukkit;

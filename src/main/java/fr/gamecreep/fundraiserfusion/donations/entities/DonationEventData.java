@@ -1,4 +1,4 @@
-package fr.gamecreep.fundraiserfusion.config;
+package fr.gamecreep.fundraiserfusion.donations.entities;
 
 import fr.gamecreep.fundraiserfusion.donations.entities.enums.Action;
 import lombok.AllArgsConstructor;

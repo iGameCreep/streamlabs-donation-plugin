@@ -1,16 +1,14 @@
 package fr.gamecreep.fundraiserfusion.donations.events;
 
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
-import fr.gamecreep.fundraiserfusion.config.DonationEventData;
+import fr.gamecreep.fundraiserfusion.donations.entities.DonationEventData;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 
 @AllArgsConstructor
-@Slf4j(topic = "Weather Donation")
 public class WeatherDonation {
 
     private final FundraiserFusion plugin;
@@ -37,7 +35,7 @@ public class WeatherDonation {
                     break;
                 }
                 default: {
-                    log.warn("Unable to determine weather type: {}", action.getData());
+                    this.plugin.getLogger().warning("Unable to determine weather type: " + action.getData());
                 }
             }
         }
