@@ -2,7 +2,6 @@ package fr.gamecreep.fundraiserfusion.utils;
 
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donor;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -20,9 +19,12 @@ public class ScoreBoardUtils {
 
     public void createScoreboard(final Player player) {
         final List<Donor> topDonors = this.plugin.getTopDonors(5);
-        final Scoreboard board = this.plugin.getServer().getScoreboardManager().getNewScoreboard();
+        final ScoreboardManager manager = this.plugin.getServer().getScoreboardManager();
+        if (manager == null) return;
 
-        final Objective objective = board.registerNewObjective("donortop", Criteria.create("donortop"), Component.text("Top 5 Donateurs"));
+        final Scoreboard board = manager.getNewScoreboard();
+
+        final Objective objective = board.registerNewObjective("donortop", Criteria.create("donortop"), "Top 5 Donateurs");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         Score score;

@@ -1,7 +1,6 @@
 package fr.gamecreep.fundraiserfusion.commands;
 
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
-import fr.gamecreep.fundraiserfusion.donations.StreamlabsDonationEventEmitter;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import lombok.NonNull;
 import org.bukkit.command.Command;
@@ -29,7 +28,7 @@ public class TestCommand implements CommandExecutor {
             String message = args.length > 2 ? String.join(" ", Arrays.copyOfRange(args, 2, args.length)) : "";
 
             final Donation donation = new Donation(args[0], Double.parseDouble(args[1]), "EUR", message);
-            new StreamlabsDonationEventEmitter().onDonation(donation);
+            this.plugin.getDonationGoalsExecutor().handleDonation(donation);
 
             this.plugin.addDonation(donation);
             return true;

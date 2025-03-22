@@ -1,6 +1,9 @@
 package fr.gamecreep.fundraiserfusion;
 
+import com.google.gson.Gson;
 import fr.gamecreep.fundraiserfusion.commands.TestCommand;
+import fr.gamecreep.fundraiserfusion.config.DonationEventData;
+import fr.gamecreep.fundraiserfusion.donations.DonationGoalsExecutor;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donor;
 import fr.gamecreep.fundraiserfusion.utils.ScoreBoardUtils;
@@ -11,14 +14,21 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j(topic = "FundraiserFusion")
 public final class FundraiserFusion extends JavaPlugin {
 
+    private final Gson gson = new Gson();
+
     @Getter
     private ScoreBoardUtils scoreBoardUtils;
+    @Getter
+    private DonationGoalsExecutor donationGoalsExecutor;
     private final List<Donation> totalDonations = new ArrayList<>();
     private final Map<String, Double> donorCache = new HashMap<>();
     private StreamlabsSocketTokenLoader websocketLoader;
@@ -30,6 +40,7 @@ public final class FundraiserFusion extends JavaPlugin {
         this.loadEvents();
         this.loadStreamlabs();
         this.loadScoreboard();
+        this.loadDonationGoalsExecutor();
     }
 
     @Override
@@ -60,6 +71,18 @@ public final class FundraiserFusion extends JavaPlugin {
 
         totalDonations.clear();
         totalDonations.addAll(donationList);
+    }
+
+    private void loadDonationGoalsExecutor() {
+        //TODO: Use a whole config file (NEED IMPL ON WEB SIDE)
+        final String fileName = "plugins" + File.separator + "FundraiserFusion" + File.separator + "config.json";
+        try {
+            final DonationEventData[] data = this.gson.fromJson(new FileReader(fileName), DonationEventData[].class);
+
+            this.donationGoalsExecutor = new DonationGoalsExecutor(this, data);
+        } catch (FileNotFoundException e) {
+            log.error("Unable to load config file. DONATION GOALS WON'T WORK !!!");
+        }
     }
 
     public void addDonation(final Donation donation) {

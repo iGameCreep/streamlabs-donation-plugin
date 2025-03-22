@@ -2,7 +2,6 @@ package fr.gamecreep.fundraiserfusion.websocket;
 
 import com.google.gson.Gson;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
-import fr.gamecreep.fundraiserfusion.donations.StreamlabsDonationEventEmitter;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import fr.gamecreep.fundraiserfusion.donations.entities.api.DonationEvent;
 import io.socket.client.IO;
@@ -18,7 +17,6 @@ public class StreamlabsWebSocketClient {
     private static final String WEBSOCKET_ENDPOINT = "https://sockets.streamlabs.com";
 
     private final Gson gson = new Gson();
-    private final StreamlabsDonationEventEmitter donationEventEmitter = new StreamlabsDonationEventEmitter();
     private final FundraiserFusion plugin;
     private Socket socket = null;
 
@@ -69,7 +67,7 @@ public class StreamlabsWebSocketClient {
                     donationData.getMessage()
             );
 
-            this.donationEventEmitter.onDonation(donation);
+            this.plugin.getDonationGoalsExecutor().handleDonation(donation);
             this.plugin.addDonation(donation);
         }
     }
