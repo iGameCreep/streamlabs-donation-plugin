@@ -4,19 +4,22 @@ import com.google.gson.Gson;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import fr.gamecreep.fundraiserfusion.donations.entities.api.DonationEvent;
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.engineio.client.transports.WebSocket;
+import org.bukkit.Bukkit;
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 
 public class StreamlabsWebSocketClient {
 
-    private static final String WEBSOCKET_ENDPOINT = "https://sockets.streamlabs.com";
+    //TODO: USE PROD ENDPOINT
+    //private static final String WEBSOCKET_ENDPOINT = "wss://sockets.streamlabs.com";
+    private static final String WEBSOCKET_ENDPOINT = "ws://localhost:8080";
 
     private final Gson gson = new Gson();
     private final FundraiserFusion plugin;
-    private Socket socket = null;
+    private WebSocketClient webSocketClient;
 
     public StreamlabsWebSocketClient(final FundraiserFusion plugin) {
         this.plugin = plugin;
@@ -29,29 +32,41 @@ public class StreamlabsWebSocketClient {
 
     private void loadWebSocket(final String socketToken) {
         try {
-            final IO.Options options = new IO.Options();
-            options.transports = new String[]{WebSocket.NAME};
-            options.query = "token=" + socketToken;
+            final URI uri = new URI(WEBSOCKET_ENDPOINT + "?token=" + socketToken);
 
-            this.socket = IO.socket(WEBSOCKET_ENDPOINT, options);
-
-            socket.on(Socket.EVENT_CONNECT, args -> this.plugin.getLogger().info("Loaded websocket"));
-
-            socket.on("event", args -> {
-                if (args.length > 0 && args[0] != null) {
-                    final DonationEvent event = this.gson.fromJson(args[0].toString(), DonationEvent.class);
-                    this.handleDonationEvent(event);
+            this.webSocketClient = new WebSocketClient(uri) {
+                @Override
+                public void onOpen(final ServerHandshake handshakedata) {
+                    plugin.getLogger().info("Loaded websocket");
                 }
-            });
 
-            socket.connect();
+                @Override
+                public void onMessage(final String message) {
+                    final DonationEvent event = gson.fromJson(message, DonationEvent.class);
+                    handleDonationEvent(event);
+                }
+
+                @Override
+                public void onClose(final int code, final String reason, final boolean remote) {
+                    plugin.getLogger().info("WebSocket closed: " + reason);
+                }
+
+                @Override
+                public void onError(final Exception ex) {
+                    plugin.getLogger().warning("WebSocket error: " + ex.getMessage());
+                }
+            };
+
+            this.webSocketClient.connect();
         } catch (URISyntaxException e) {
             this.plugin.getLogger().warning("Unable to load the websocket.");
         }
     }
 
     public void endWebSocket() {
-        if (this.socket != null && this.socket.isActive()) this.socket.close();
+        if (this.webSocketClient != null && this.webSocketClient.isOpen()) {
+            this.webSocketClient.close();
+        }
     }
 
     private void handleDonationEvent(final DonationEvent event) {
@@ -65,8 +80,10 @@ public class StreamlabsWebSocketClient {
                     donationData.getMessage()
             );
 
-            this.plugin.getDonationGoalsExecutor().handleDonation(donation);
-            this.plugin.addDonation(donation);
+            Bukkit.getScheduler().runTask(this.plugin, () -> {
+                this.plugin.getDonationGoalsExecutor().handleDonation(donation);
+                this.plugin.addDonation(donation);
+            });
         }
     }
 }

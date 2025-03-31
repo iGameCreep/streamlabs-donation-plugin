@@ -7,7 +7,6 @@ import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.config.SecretsFile;
 import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
 import lombok.NonNull;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -87,8 +86,8 @@ public class StreamlabsSocketTokenLoader {
 
             final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                final JSONObject jsonObject = new JSONObject(response.body());
-                return jsonObject.getString("socket_token");
+                final JsonObject jsonObject = this.gson.fromJson(response.body(), JsonObject.class);
+                return jsonObject.get("socket_token").getAsString();
                 //TODO: Save token in file or idk
             } else {
                 this.plugin.getLogger().warning("Unable to fetch socket token.");
