@@ -1,12 +1,14 @@
 package fr.gamecreep.fundraiserfusion.websocket;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
-import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
-import fr.gamecreep.fundraiserfusion.donations.entities.api.DonationEvent;
-import org.bukkit.Bukkit;
+import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ACommonEvent;
+import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEvent;
+import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventFor;
+import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventType;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.engineio.client.transports.WebSocket;
@@ -62,40 +64,28 @@ public class StreamlabsWebSocketClient {
             if (args.length > 0 && args[0] != null) {
                 // API docs: https://dev.streamlabs.com/docs/socket-api
                 final JsonObject rawEvent = JsonParser.parseString(args[0].toString()).getAsJsonObject();
-                final String type = rawEvent.get("type").getAsString();
-
-                if (type == null) {
+                if (!rawEvent.has("for") || !rawEvent.has("type")) {
                     return;
                 }
 
-                if (type.equals("donation")) {
-                    DonationEvent event = gson.fromJson(args[0].toString(), DonationEvent.class);
-                    handleDonationEvent(event);
-                } else {
-                    this.plugin.getLogger().info("Ignoring event: " + type);
+                final EStreamLabsEventType eventType = EStreamLabsEventType.valueOf(rawEvent.get("type").getAsString());
+                final EStreamLabsEventFor eventFor = EStreamLabsEventFor.valueOf(rawEvent.get("for").getAsString());
+                final EStreamLabsEvent event = EStreamLabsEvent.from(eventFor, eventType);
+
+                if (event == null) {
+                    return;
+                }
+
+                final JsonArray messageArray = rawEvent.getAsJsonArray("message");
+                if (messageArray != null && !messageArray.isEmpty()) {
+                    final ACommonEvent eventData = this.gson.fromJson(messageArray.get(0).getAsJsonObject(), event.getEventDataClass());
+
+                    this.plugin.getStreamEventHandler().handleStreamEvent(event, eventData);
                 }
             }
         } catch (final Exception e) {
             this.plugin.getLogger().severe("Unable to parse event from StreamLabs WS: " + e.getMessage());
             this.endWebSocket();
-        }
-    }
-
-    private void handleDonationEvent(final DonationEvent event) {
-        for (final DonationEvent.DonationMessage donationData : event.getMessage()) {
-            if (!event.getType().equals("donation")) continue;
-
-            final Donation donation = new Donation(
-                    donationData.getName(),
-                    donationData.getAmount(),
-                    donationData.getFormattedAmount(),
-                    donationData.getMessage()
-            );
-
-            Bukkit.getScheduler().runTask(this.plugin, () -> {
-                this.plugin.getDonationGoalsExecutor().handleDonation(donation);
-                this.plugin.addDonation(donation);
-            });
         }
     }
 }
