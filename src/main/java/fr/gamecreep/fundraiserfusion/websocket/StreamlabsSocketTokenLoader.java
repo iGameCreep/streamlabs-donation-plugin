@@ -1,12 +1,9 @@
 package fr.gamecreep.fundraiserfusion.websocket;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.config.SecretsFile;
-import fr.gamecreep.fundraiserfusion.donations.entities.Donation;
-import lombok.NonNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,11 +12,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.List;
 
 public class StreamlabsSocketTokenLoader {
 
-    private static final String DONATIONS_ENDPOINT = "https://streamlabs.com/api/v2.0/donations";
     private static final String SOCKET_TOKEN_ENDPOINT = "https://streamlabs.com/api/v2.0/socket/token";
 
     private final Gson gson = new Gson();
@@ -44,33 +39,6 @@ public class StreamlabsSocketTokenLoader {
         return webSocketClient;
     }
 
-    @NonNull
-    public List<Donation> fetchDonations() {
-        try (final HttpClient client = HttpClient.newHttpClient()) {
-            final String accessToken = this.getSecrets().getAccessToken();
-
-            final HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(DONATIONS_ENDPOINT))
-                    .header("Authorization", "Bearer " + accessToken)
-                    .header("Accept", "application/json")
-                    .GET()
-                    .build();
-
-            final HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() == 200) {
-                JsonObject jsonResponse = gson.fromJson(response.body(), JsonObject.class);
-                return gson.fromJson(jsonResponse.getAsJsonArray("data"), new TypeToken<List<Donation>>() {}.getType());
-            } else {
-                this.plugin.getLogger().warning("Failed to fetch donations: HTTP error code " + response.statusCode());
-            }
-        } catch (Exception e) {
-            this.plugin.getLogger().warning("Could not retrieve donations.");
-        }
-
-        return List.of();
-    }
-
     private SecretsFile getSecrets() throws FileNotFoundException {
         final String fileName = "plugins" + File.separator + "FundraiserFusion" + File.separator + "secrets.json";
         return this.gson.fromJson(new FileReader(fileName), SecretsFile.class);
@@ -88,7 +56,7 @@ public class StreamlabsSocketTokenLoader {
             if (response.statusCode() == 200) {
                 final JsonObject jsonObject = this.gson.fromJson(response.body(), JsonObject.class);
                 return jsonObject.get("socket_token").getAsString();
-                //TODO: Save token in file or idk
+                //TODO: Save token in file; use hidden folder
             } else {
                 this.plugin.getLogger().warning("Unable to fetch socket token.");
             }

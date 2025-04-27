@@ -4,7 +4,6 @@ main: fr.gamecreep.fundraiserfusion.FundraiserFusion
 api-version: '1.21.4'
 load: POSTWORLD
 commands:
-  #TODO: Remove this test command
-  test:
-    description: Test command to simulate a donation through StreamLabs
-    usage: /test [donor-name] [money-amount] [message]
+  info:
+    description: Get informations about the plugin !
+    usage: /info
