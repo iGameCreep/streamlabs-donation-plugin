@@ -1,10 +1,13 @@
 package fr.gamecreep.fundraiserfusion.stream;
 
+import com.google.gson.Gson;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ACommonEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ADonationEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEvent;
 import fr.gamecreep.fundraiserfusion.stream.entities.StreamEvent;
+import fr.gamecreep.fundraiserfusion.stream.entities.actions.CommandExecData;
+import fr.gamecreep.fundraiserfusion.stream.entities.actions.core.ACommonActionData;
 import fr.gamecreep.fundraiserfusion.stream.entities.enums.Action;
 import org.bukkit.Server;
 
@@ -12,6 +15,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class StreamEventHandler {
+
+    private final Gson gson = new Gson();
 
     private final FundraiserFusion plugin;
     private final StreamEvent[] streamEvents;
@@ -41,18 +46,20 @@ public class StreamEventHandler {
                 }
 
                 for (final StreamEvent.StreamEventAction action : streamEvent.getActions()) {
+                    final ACommonActionData actionData = this.gson.fromJson(action.getData(), action.getAction().getDataClass());
+
                     if (action.getAction().equals(Action.COMMAND_EXEC)) {
-                        this.handleCommandExec(action);
+                        this.handleCommandExec(actionData);
                     }
                 }
             }
         }
     }
 
-    private void handleCommandExec(final StreamEvent.StreamEventAction action) {
-        final String command = action.getData();
-
-        final Server server = this.plugin.getServer();
-        server.dispatchCommand(server.getConsoleSender(), command);
+    private void handleCommandExec(final ACommonActionData actionData) {
+        if (actionData instanceof final CommandExecData commandExecData) {
+            final Server server = this.plugin.getServer();
+            server.dispatchCommand(server.getConsoleSender(), commandExecData.getCommand());
+        }
     }
 }
