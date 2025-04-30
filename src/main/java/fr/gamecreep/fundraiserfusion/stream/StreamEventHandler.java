@@ -5,6 +5,8 @@ import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ACommonEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ADonationEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEvent;
 import fr.gamecreep.fundraiserfusion.stream.entities.StreamEvent;
+import fr.gamecreep.fundraiserfusion.stream.entities.enums.Action;
+import org.bukkit.Server;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -38,9 +40,19 @@ public class StreamEventHandler {
                     return;
                 }
 
-                final StreamEvent.StreamEventAction[] actions = streamEvent.getActions();
-                //TODO: Execute actions
+                for (final StreamEvent.StreamEventAction action : streamEvent.getActions()) {
+                    if (action.getAction().equals(Action.COMMAND_EXEC)) {
+                        this.handleCommandExec(action);
+                    }
+                }
             }
         }
+    }
+
+    private void handleCommandExec(final StreamEvent.StreamEventAction action) {
+        final String command = action.getData();
+
+        final Server server = this.plugin.getServer();
+        server.dispatchCommand(server.getConsoleSender(), command);
     }
 }
