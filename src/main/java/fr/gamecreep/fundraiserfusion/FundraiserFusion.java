@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import fr.gamecreep.fundraiserfusion.commands.InfoCommand;
 import fr.gamecreep.fundraiserfusion.config.ConfigFile;
 import fr.gamecreep.fundraiserfusion.stream.StreamEventHandler;
-import fr.gamecreep.fundraiserfusion.utils.ScoreBoardUtils;
 import fr.gamecreep.fundraiserfusion.events.PlayerJoinLeave;
 import fr.gamecreep.fundraiserfusion.websocket.StreamlabsSocketTokenLoader;
 import fr.gamecreep.fundraiserfusion.websocket.StreamlabsWebSocketClient;
@@ -21,8 +20,6 @@ public final class FundraiserFusion extends JavaPlugin {
     private final Gson gson = new Gson();
 
     @Getter
-    private ScoreBoardUtils scoreBoardUtils;
-    @Getter
     private StreamEventHandler streamEventHandler;
     private StreamlabsWebSocketClient webSocketClient;
 
@@ -31,7 +28,6 @@ public final class FundraiserFusion extends JavaPlugin {
         this.loadCommands();
         this.loadEvents();
         this.loadStreamlabs();
-        this.loadScoreboard();
         this.loadConfig();
     }
 
@@ -58,11 +54,6 @@ public final class FundraiserFusion extends JavaPlugin {
     private void loadStreamlabs() {
         final StreamlabsSocketTokenLoader websocketLoader = new StreamlabsSocketTokenLoader(this);
         this.webSocketClient = websocketLoader.loadSocket();
-    }
-
-    private void loadScoreboard() {
-        this.scoreBoardUtils = new ScoreBoardUtils(this);
-        // TODO: Refactor scoreboard
     }
 
     private void loadConfig() {

@@ -1,6 +1,6 @@
 package fr.gamecreep.fundraiserfusion.stream.entities;
 
-import fr.gamecreep.fundraiserfusion.donations.entities.enums.Action;
+import fr.gamecreep.fundraiserfusion.stream.entities.enums.Action;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventFor;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventType;
 import lombok.AllArgsConstructor;
