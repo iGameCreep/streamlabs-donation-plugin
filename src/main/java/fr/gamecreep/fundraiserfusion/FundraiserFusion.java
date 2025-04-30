@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import fr.gamecreep.fundraiserfusion.commands.InfoCommand;
 import fr.gamecreep.fundraiserfusion.config.ConfigFile;
 import fr.gamecreep.fundraiserfusion.stream.StreamEventHandler;
-import fr.gamecreep.fundraiserfusion.events.PlayerJoinLeave;
 import fr.gamecreep.fundraiserfusion.websocket.StreamlabsSocketTokenLoader;
 import fr.gamecreep.fundraiserfusion.websocket.StreamlabsWebSocketClient;
 import lombok.Getter;
@@ -26,7 +25,6 @@ public final class FundraiserFusion extends JavaPlugin {
     @Override
     public void onEnable() {
         this.loadCommands();
-        this.loadEvents();
         this.loadStreamlabs();
         this.loadConfig();
     }
@@ -45,10 +43,6 @@ public final class FundraiserFusion extends JavaPlugin {
         } catch (NullPointerException e) {
          getLogger().warning("Unable to load commands");
         }
-    }
-
-    private void loadEvents() {
-        getServer().getPluginManager().registerEvents(new PlayerJoinLeave(this), this);
     }
 
     private void loadStreamlabs() {
