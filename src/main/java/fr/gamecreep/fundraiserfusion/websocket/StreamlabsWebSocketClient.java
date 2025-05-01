@@ -20,20 +20,18 @@ public class StreamlabsWebSocketClient {
     private final FundraiserFusion plugin;
     private Socket socket = null;
 
-    public StreamlabsWebSocketClient(final FundraiserFusion plugin) {
+    public StreamlabsWebSocketClient(final FundraiserFusion plugin, final String wsToken) {
         this.plugin = plugin;
-    }
 
-    public void load(final String socketToken) {
         this.endWebSocket();
-        this.loadWebSocket(socketToken);
+        this.loadWebSocket(wsToken);
     }
 
-    private void loadWebSocket(final String socketToken) {
+    private void loadWebSocket(final String wsToken) {
         try {
             final IO.Options options = new IO.Options();
             options.transports = new String[]{WebSocket.NAME};
-            options.query = "token=" + socketToken;
+            options.query = "token=" + wsToken;
 
             this.socket = IO.socket(WEBSOCKET_ENDPOINT, options);
 
