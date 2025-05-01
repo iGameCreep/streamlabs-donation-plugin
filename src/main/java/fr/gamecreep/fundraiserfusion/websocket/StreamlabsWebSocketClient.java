@@ -1,9 +1,6 @@
 package fr.gamecreep.fundraiserfusion.websocket;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ACommonEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEvent;
@@ -68,8 +65,12 @@ public class StreamlabsWebSocketClient {
                     return;
                 }
 
-                final EStreamLabsEventType eventType = EStreamLabsEventType.valueOf(rawEvent.get("type").getAsString());
-                final EStreamLabsEventFor eventFor = EStreamLabsEventFor.valueOf(rawEvent.get("for").getAsString());
+                final EStreamLabsEventType eventType = EStreamLabsEventType.from(rawEvent.get("type").getAsString());
+                final EStreamLabsEventFor eventFor = EStreamLabsEventFor.from(rawEvent.get("for").getAsString());
+                if (eventType == null || eventFor == null) {
+                    return;
+                }
+
                 final EStreamLabsEvent event = EStreamLabsEvent.from(eventFor, eventType);
 
                 if (event == null) {

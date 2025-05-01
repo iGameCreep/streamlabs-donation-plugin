@@ -1,8 +1,11 @@
 package fr.gamecreep.fundraiserfusion;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fr.gamecreep.fundraiserfusion.commands.InfoCommand;
 import fr.gamecreep.fundraiserfusion.config.ConfigFile;
+import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventFor;
+import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventType;
 import fr.gamecreep.fundraiserfusion.stream.StreamEventHandler;
 import fr.gamecreep.fundraiserfusion.websocket.StreamlabsSocketTokenLoader;
 import fr.gamecreep.fundraiserfusion.websocket.StreamlabsWebSocketClient;
@@ -16,7 +19,10 @@ import java.util.Objects;
 
 public final class FundraiserFusion extends JavaPlugin {
 
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .registerTypeAdapter(EStreamLabsEventType.class, new EStreamLabsEventType.EStreamLabsEventTypeDeserializer())
+            .registerTypeAdapter(EStreamLabsEventFor.class, new EStreamLabsEventFor.EStreamLabsEventForDeserializer())
+            .create();
 
     @Getter
     private StreamEventHandler streamEventHandler;
@@ -57,7 +63,12 @@ public final class FundraiserFusion extends JavaPlugin {
 
             this.streamEventHandler = new StreamEventHandler(this, config.getEvents());
         } catch (FileNotFoundException e) {
-            this.getLogger().severe("Unable to load config file. DONATION GOALS WON'T WORK !!!");
+            final String message = "Unable to load config file, stopping plugin...";
+
+            this.getLogger().severe(message);
+            this.getServer().broadcastMessage(message);
+
+            this.getServer().getPluginManager().disablePlugin(this);
         }
     }
 }

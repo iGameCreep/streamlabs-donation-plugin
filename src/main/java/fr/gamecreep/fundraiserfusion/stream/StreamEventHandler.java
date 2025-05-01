@@ -9,6 +9,7 @@ import fr.gamecreep.fundraiserfusion.stream.entities.StreamEvent;
 import fr.gamecreep.fundraiserfusion.stream.entities.actions.CommandExecData;
 import fr.gamecreep.fundraiserfusion.stream.entities.actions.core.ACommonActionData;
 import fr.gamecreep.fundraiserfusion.stream.entities.enums.Action;
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
 import java.util.Arrays;
@@ -59,7 +60,17 @@ public class StreamEventHandler {
     private void handleCommandExec(final ACommonActionData actionData) {
         if (actionData instanceof final CommandExecData commandExecData) {
             final Server server = this.plugin.getServer();
-            server.dispatchCommand(server.getConsoleSender(), commandExecData.getCommand());
+            final String command = this.stripLeadingSlash(commandExecData.getCommand());
+
+            System.out.println(command);
+
+            Bukkit.getScheduler().runTask(this.plugin, () ->
+                    server.dispatchCommand(server.getConsoleSender(), command)
+            );
         }
+    }
+
+    private String stripLeadingSlash(final String command) {
+        return command != null && command.startsWith("/") ? command.substring(1) : command;
     }
 }
