@@ -1,6 +1,6 @@
-name: FundraiserFusion
+name: StreamTrigger
 version: '${project.version}'
-main: fr.gamecreep.fundraiserfusion.FundraiserFusion
+main: fr.gamecreep.streamtrigger.StreamTrigger
 api-version: '1.21.4'
 load: POSTWORLD
 commands:
@@ -10,13 +10,13 @@ commands:
   token:
     description: "Set the StreamLabs WebSocket token to use ! /info for more"
     usage: "/token <token>"
-    permission: "fundraiserfusion.streamlabs"
+    permission: "streamtrigger.streamlabs"
 permissions:
-  fundraiserfusion.*:
+  streamtrigger.*:
     description: "Wildcard permission, allows to do everything"
     default: op
     children:
       basichomes.streamlabs: true
-  fundraiserfusion.streamlabs:
+  streamtrigger.streamlabs:
     description: "Allows to set the StreamLabs WebSocket token to use"
     default: op
