@@ -1,7 +1,11 @@
 package fr.gamecreep.fundraiserfusion.websocket;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import fr.gamecreep.fundraiserfusion.FundraiserFusion;
+import fr.gamecreep.fundraiserfusion.exceptions.WebSocketException;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.api.core.ACommonEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEvent;
 import fr.gamecreep.fundraiserfusion.external.streamlabs.enums.EStreamLabsEventFor;
@@ -10,7 +14,7 @@ import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.engineio.client.transports.WebSocket;
 
-import java.net.URISyntaxException;
+import java.util.Arrays;
 
 public class StreamlabsWebSocketClient {
 
@@ -20,15 +24,15 @@ public class StreamlabsWebSocketClient {
     private final FundraiserFusion plugin;
     private Socket socket = null;
 
-    public StreamlabsWebSocketClient(final FundraiserFusion plugin, final String wsToken) {
+    public StreamlabsWebSocketClient(final FundraiserFusion plugin, final String wsToken) throws WebSocketException {
         this.plugin = plugin;
 
-        this.endWebSocket();
         this.loadWebSocket(wsToken);
     }
 
-    private void loadWebSocket(final String wsToken) {
+    private void loadWebSocket(final String wsToken) throws WebSocketException {
         try {
+            this.endWebSocket(false);
             final IO.Options options = new IO.Options();
             options.transports = new String[]{WebSocket.NAME};
             options.query = "token=" + wsToken;
@@ -36,21 +40,24 @@ public class StreamlabsWebSocketClient {
             this.socket = IO.socket(WEBSOCKET_ENDPOINT, options);
 
             socket.on(Socket.EVENT_CONNECT, args -> this.plugin.getLogger().info("Loaded websocket"));
+            socket.on(Socket.EVENT_CONNECT_ERROR, args -> plugin.getLogger().severe("WebSocket connect error: " + Arrays.toString(args)));
 
             socket.on("event", this::onSocketEvent);
 
             socket.connect();
-        } catch (URISyntaxException e) {
-            this.plugin.getLogger().warning("Unable to load the websocket.");
+        } catch (Exception e) {
+            throw new WebSocketException("Unable to load WebSocket client", e);
         }
     }
 
-    public void endWebSocket() {
+    public void endWebSocket(final boolean log) {
         if (this.socket != null && this.socket.isActive()) {
             this.socket.close();
             this.plugin.getLogger().info("WebSocket closed successfully !");
         } else {
-            this.plugin.getLogger().warning("Unable to close WebSocket.");
+            if (log) {
+                this.plugin.getLogger().warning("Unable to close WebSocket.");
+            }
         }
     }
 
@@ -84,7 +91,7 @@ public class StreamlabsWebSocketClient {
             }
         } catch (final Exception e) {
             this.plugin.getLogger().severe("Unable to parse event from StreamLabs WS: " + e.getMessage());
-            this.endWebSocket();
+            this.endWebSocket(true);
         }
     }
 }

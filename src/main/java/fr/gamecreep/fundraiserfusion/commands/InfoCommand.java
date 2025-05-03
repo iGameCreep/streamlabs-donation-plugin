@@ -13,8 +13,8 @@ public class InfoCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NonNull final CommandSender commandSender,
                              @NonNull final Command command,
-                             @NonNull final String s,
-                             @NonNull final String @NonNull[] strings
+                             @NonNull final String label,
+                             @NonNull final String @NonNull[] args
     ) {
         if (commandSender instanceof final Player player) {
             final String url = "https://fundraiserfusion.netlify.app";

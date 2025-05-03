@@ -5,5 +5,18 @@ api-version: '1.21.4'
 load: POSTWORLD
 commands:
   info:
-    description: Get informations about the plugin !
-    usage: /info
+    description: "Get informations about the plugin !"
+    usage: "/info"
+  token:
+    description: "Set the StreamLabs WebSocket token to use ! /info for more"
+    usage: "/token <token>"
+    permission: "fundraiserfusion.streamlabs"
+permissions:
+  fundraiserfusion.*:
+    description: "Wildcard permission, allows to do everything"
+    default: op
+    children:
+      basichomes.streamlabs: true
+  fundraiserfusion.streamlabs:
+    description: "Allows to set the StreamLabs WebSocket token to use"
+    default: op
