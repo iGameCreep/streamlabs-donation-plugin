@@ -11,7 +11,7 @@ import fr.gamecreep.streamtrigger.exceptions.WebSocketException;
 import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEventFor;
 import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEventType;
 import fr.gamecreep.streamtrigger.stream.StreamEventHandler;
-import fr.gamecreep.streamtrigger.websocket.StreamlabsWebSocketClient;
+import fr.gamecreep.streamtrigger.external.streamlabs.websocket.StreamlabsWSClient;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,7 +35,7 @@ public final class StreamTrigger extends JavaPlugin {
 
     @Getter
     private StreamEventHandler streamEventHandler;
-    private StreamlabsWebSocketClient webSocketClient;
+    private StreamlabsWSClient webSocketClient;
 
     @Override
     public void onEnable() {
@@ -43,8 +43,7 @@ public final class StreamTrigger extends JavaPlugin {
                 this.getLogger().severe("Failed to create plugin data folder: " + this.getDataFolder().getAbsolutePath());
                 this.getServer().getPluginManager().disablePlugin(this);
                 return;
-            }
-
+        }
 
         this.loadCommands();
         this.loadStreamlabs();
@@ -59,7 +58,7 @@ public final class StreamTrigger extends JavaPlugin {
         this.getLogger().info("Stopped WebSocket and plugin !");
     }
 
-    public void saveToken(final String wsToken) throws StreamTriggerException {
+    public void saveToken(String wsToken) throws StreamTriggerException {
         try {
             Files.createDirectories(this.secretsFilePath.getParent());
 
@@ -69,8 +68,8 @@ public final class StreamTrigger extends JavaPlugin {
         }
     }
 
-    public void loadStreamlabsFromToken(@NonNull final String token) throws WebSocketException {
-        this.webSocketClient = new StreamlabsWebSocketClient(this, token);
+    public void loadStreamlabsFromToken(@NonNull String token) throws WebSocketException {
+        this.webSocketClient = new StreamlabsWSClient(this, token);
     }
 
     private void loadCommands() {
@@ -96,7 +95,7 @@ public final class StreamTrigger extends JavaPlugin {
 
     private void loadConfig() {
         try (FileReader reader = new FileReader(this.configFilePath.toFile())) {
-            final ConfigFile config = this.gson.fromJson(reader, ConfigFile.class);
+            ConfigFile config = this.gson.fromJson(reader, ConfigFile.class);
             this.streamEventHandler = new StreamEventHandler(this, config.getEvents());
         } catch (IOException e) {
             this.fileNotFound(e, "config", this.configFilePath.toAbsolutePath().toString());
@@ -112,8 +111,8 @@ public final class StreamTrigger extends JavaPlugin {
         }
     }
 
-    private void fileNotFound(final Exception e, final String fileName, final String filePath) {
-        final String message = "Expected " + fileName + " file at: " + filePath;
+    private void fileNotFound(Exception e, String fileName, String filePath) {
+        String message = "Expected " + fileName + " file at: " + filePath;
 
         this.getLogger().severe(e.getMessage());
 
@@ -122,7 +121,7 @@ public final class StreamTrigger extends JavaPlugin {
     }
 
     private Path getFilePath(String... paths) {
-        final Path pluginFolder = this.getDataFolder().toPath();
+        Path pluginFolder = this.getDataFolder().toPath();
         return Paths.get(pluginFolder.toString(), paths);
     }
 }

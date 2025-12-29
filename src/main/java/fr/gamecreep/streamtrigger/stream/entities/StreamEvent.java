@@ -5,8 +5,8 @@ import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEventFor;
 import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEventType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
 @AllArgsConstructor

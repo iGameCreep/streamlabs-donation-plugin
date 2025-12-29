@@ -22,7 +22,7 @@ public class StreamEventHandler {
     private final StreamTrigger plugin;
     private final StreamEvent[] streamEvents;
 
-    public StreamEventHandler(final StreamTrigger plugin, final StreamEvent[] events) {
+    public StreamEventHandler(StreamTrigger plugin, StreamEvent[] events) {
         this.plugin = plugin;
         this.streamEvents = events;
 
@@ -32,22 +32,22 @@ public class StreamEventHandler {
         );
     }
 
-    public void handleStreamEvent(final EStreamLabsEvent event, final ACommonEvent eventData) {
+    public void handleStreamEvent(EStreamLabsEvent event, ACommonEvent eventData) {
         StreamEvent.StreamEventData data;
-        for (final StreamEvent streamEvent : this.streamEvents) {
+        for (StreamEvent streamEvent : this.streamEvents) {
             data = streamEvent.getEventData();
 
             if (event.getEventFor().equals(data.getEventFor()) &&
                 event.getEventType().equals(data.getEventType())) {
 
-                if (eventData instanceof final ADonationEvent donationEvent &&
+                if (eventData instanceof ADonationEvent donationEvent &&
                     streamEvent.getDonationThreshold() != null &&
                     streamEvent.getDonationThreshold() > donationEvent.getAmount()) {
                     return;
                 }
 
-                for (final StreamEvent.StreamEventAction action : streamEvent.getActions()) {
-                    final ACommonActionData actionData = this.gson.fromJson(action.getData(), action.getAction().getDataClass());
+                for (StreamEvent.StreamEventAction action : streamEvent.getActions()) {
+                    ACommonActionData actionData = this.gson.fromJson(action.getData(), action.getAction().getDataClass());
 
                     if (action.getAction().equals(Action.COMMAND_EXEC)) {
                         this.handleCommandExec(actionData);
@@ -57,10 +57,10 @@ public class StreamEventHandler {
         }
     }
 
-    private void handleCommandExec(final ACommonActionData actionData) {
-        if (actionData instanceof final CommandExecData commandExecData) {
-            final Server server = this.plugin.getServer();
-            final String command = this.stripLeadingSlash(commandExecData.getCommand());
+    private void handleCommandExec(ACommonActionData actionData) {
+        if (actionData instanceof CommandExecData commandExecData) {
+            Server server = this.plugin.getServer();
+            String command = this.stripLeadingSlash(commandExecData.getCommand());
 
             Bukkit.getScheduler().runTask(this.plugin, () ->
                     server.dispatchCommand(server.getConsoleSender(), command)
@@ -68,7 +68,7 @@ public class StreamEventHandler {
         }
     }
 
-    private String stripLeadingSlash(final String command) {
+    private String stripLeadingSlash(String command) {
         return command != null && command.startsWith("/") ? command.substring(1) : command;
     }
 }

@@ -9,9 +9,7 @@ import fr.gamecreep.streamtrigger.external.streamlabs.api.youtube.YoutubeSubscri
 import fr.gamecreep.streamtrigger.external.streamlabs.api.youtube.YoutubeSuperChatEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NonNull;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 @AllArgsConstructor
 @Getter
@@ -34,7 +32,7 @@ public enum EStreamLabsEvent {
     private final Class<? extends ACommonEvent> eventDataClass;
 
     @Nullable
-    public static EStreamLabsEvent from(@NonNull final EStreamLabsEventFor eventFor, @NonNull final EStreamLabsEventType eventType) {
+    public static EStreamLabsEvent from(EStreamLabsEventFor eventFor, EStreamLabsEventType eventType) {
         for (final EStreamLabsEvent event : EStreamLabsEvent.values()) {
             if (event.getEventFor() == eventFor && event.getEventType() == eventType) {
                 return event;

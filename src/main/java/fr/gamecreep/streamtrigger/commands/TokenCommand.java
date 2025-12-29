@@ -15,18 +15,18 @@ public class TokenCommand implements TabExecutor {
 
     private final StreamTrigger plugin;
 
-    public TokenCommand(@NonNull final StreamTrigger plugin) {
+    public TokenCommand(StreamTrigger plugin) {
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(@NonNull final CommandSender commandSender,
-                             @NonNull final Command command,
-                             @NonNull final String label,
-                             @NonNull final String @NonNull[] args
+    public boolean onCommand(@NonNull CommandSender commandSender,
+                             @NonNull Command command,
+                             @NonNull String label,
+                             @NonNull String @NonNull[] args
     ) {
         if (args.length > 0) {
-            final String token = args[0];
+            String token = args[0];
 
             this.sendMessage(commandSender, "Trying to load WebSocket...");
 
@@ -44,10 +44,10 @@ public class TokenCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(@NonNull final CommandSender commandSender,
-                             @NonNull final Command command,
-                             @NonNull final String label,
-                             @NonNull final String @NonNull[] args
+    public List<String> onTabComplete(@NonNull CommandSender commandSender,
+                                      @NonNull Command command,
+                                      @NonNull String label,
+                                      @NonNull String @NonNull[] args
     ) {
         if (args.length == 0) {
             return Collections.singletonList("[token]");
@@ -56,8 +56,8 @@ public class TokenCommand implements TabExecutor {
         }
     }
 
-    private void sendMessage(final CommandSender target, final String message) {
-        if (target instanceof final Player player) {
+    private void sendMessage(CommandSender target, String message) {
+        if (target instanceof Player player) {
             player.sendMessage(message);
         }
     }
