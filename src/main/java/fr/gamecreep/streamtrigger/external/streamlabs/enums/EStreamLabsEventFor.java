@@ -15,8 +15,7 @@ public enum EStreamLabsEventFor {
 
     STREAMLABS("streamlabs"),
     TWITCH_ACCOUNT("twitch_account"),
-    YOUTUBE_ACCOUNT("youtube_account"),
-    MIXER_ACCOUNT("mixer_account");
+    YOUTUBE_ACCOUNT("youtube_account");
 
     private final String stringValue;
 

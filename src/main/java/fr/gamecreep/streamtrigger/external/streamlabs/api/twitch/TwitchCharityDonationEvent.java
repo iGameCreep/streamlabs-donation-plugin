@@ -5,7 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class TwitchCharityDonationEvent extends ADonationEvent {
-    public TwitchCharityDonationEvent(String name, String message, String from, int amount, String formattedAmount, String currency) {
-        super(name, message, from, amount, formattedAmount, currency);
+    public TwitchCharityDonationEvent(String username,
+                                      String message,
+                                      int amount,
+                                      String formattedAmount,
+                                      String currency
+    ) {
+        super(username, message, null, amount, formattedAmount, currency);
     }
 }

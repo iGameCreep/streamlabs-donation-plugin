@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import fr.gamecreep.streamtrigger.external.streamlabs.api.core.ASubscriptionEvent;
 import lombok.Getter;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Getter
 public class TwitchSubscriptionEvent extends ASubscriptionEvent {
     @SerializedName("streak_months")
@@ -27,5 +30,18 @@ public class TwitchSubscriptionEvent extends ASubscriptionEvent {
         this.subType = subType;
         this.subPlan = subPlan;
         this.subPlanName = subPlanName;
+    }
+
+    @Override
+    public Map<String, String> getExportedData() {
+        Map<String, String> map = new HashMap<>(Map.of(
+                "streak_months", String.valueOf(this.streakMonths),
+                "sub_type", this.subType,
+                "sub_plan", this.subPlan,
+                "sub_plan_name", this.subPlanName
+        ));
+
+        map.putAll(super.getExportedData());
+        return map;
     }
 }

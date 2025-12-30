@@ -5,17 +5,21 @@ import lombok.Getter;
 
 import java.text.NumberFormat;
 import java.util.Currency;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @Getter
 public class TwitchBitsEvent extends AMoneyEvent {
+    private final String emotes;
 
-    public TwitchBitsEvent(String name,
+    public TwitchBitsEvent(String username,
                            String message,
-                           String from,
+                           String emotes,
                            int amount,
                            String currency) {
-        super(name, message, from, amount, getFormattedBitsAmount(amount, currency), currency);
+        super(username, message, amount, getFormattedBitsAmount(amount, currency), currency);
+        this.emotes = emotes != null ? emotes : "null";
     }
 
      static String getFormattedBitsAmount(int amount, String currency) {
@@ -30,5 +34,15 @@ public class TwitchBitsEvent extends AMoneyEvent {
          currencyFormatter.setCurrency(Currency.getInstance(currency));
 
          return currencyFormatter.format(dollarAmount);
+    }
+
+    @Override
+    public Map<String, String> getExportedData() {
+        Map<String, String> map = new HashMap<>(Map.of(
+                "emotes", this.emotes
+        ));
+
+        map.putAll(super.getExportedData());
+        return map;
     }
 }

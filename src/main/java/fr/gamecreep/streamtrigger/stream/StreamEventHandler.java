@@ -7,8 +7,7 @@ import fr.gamecreep.streamtrigger.external.streamlabs.api.core.ADonationEvent;
 import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEvent;
 import fr.gamecreep.streamtrigger.stream.entities.StreamEvent;
 import fr.gamecreep.streamtrigger.stream.entities.actions.CommandExecData;
-import fr.gamecreep.streamtrigger.stream.entities.actions.core.ACommonActionData;
-import fr.gamecreep.streamtrigger.stream.entities.enums.Action;
+import fr.gamecreep.streamtrigger.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
@@ -47,28 +46,20 @@ public class StreamEventHandler {
                 }
 
                 for (StreamEvent.StreamEventAction action : streamEvent.getActions()) {
-                    ACommonActionData actionData = this.gson.fromJson(action.getData(), action.getAction().getDataClass());
+                    CommandExecData actionData = this.gson.fromJson(action.getData(), CommandExecData.class);
 
-                    if (action.getAction().equals(Action.COMMAND_EXEC)) {
-                        this.handleCommandExec(actionData);
-                    }
+                    this.handleCommandExec(actionData);
                 }
             }
         }
     }
 
-    private void handleCommandExec(ACommonActionData actionData) {
-        if (actionData instanceof CommandExecData commandExecData) {
-            Server server = this.plugin.getServer();
-            String command = this.stripLeadingSlash(commandExecData.getCommand());
+    private void handleCommandExec(CommandExecData actionData) {
+        Server server = this.plugin.getServer();
+        String command = StringUtils.stripLeadingSlash(actionData.getCommand());
 
-            Bukkit.getScheduler().runTask(this.plugin, () ->
-                    server.dispatchCommand(server.getConsoleSender(), command)
-            );
-        }
-    }
-
-    private String stripLeadingSlash(String command) {
-        return command != null && command.startsWith("/") ? command.substring(1) : command;
+        Bukkit.getScheduler().runTask(this.plugin, () ->
+                server.dispatchCommand(server.getConsoleSender(), command)
+        );
     }
 }

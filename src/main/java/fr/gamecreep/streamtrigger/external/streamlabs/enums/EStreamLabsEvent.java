@@ -33,7 +33,7 @@ public enum EStreamLabsEvent {
 
     @Nullable
     public static EStreamLabsEvent from(EStreamLabsEventFor eventFor, EStreamLabsEventType eventType) {
-        for (final EStreamLabsEvent event : EStreamLabsEvent.values()) {
+        for (EStreamLabsEvent event : EStreamLabsEvent.values()) {
             if (event.getEventFor() == eventFor && event.getEventType() == eventType) {
                 return event;
             }
