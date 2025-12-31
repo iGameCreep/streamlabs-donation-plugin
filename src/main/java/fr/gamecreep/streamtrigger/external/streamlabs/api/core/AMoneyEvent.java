@@ -27,7 +27,7 @@ public abstract class AMoneyEvent extends AMessageEvent {
         Map<String, String> map = new java.util.HashMap<>();
 
         map.put("amount", String.valueOf(this.amount));
-        map.put("formattedAmount", this.formattedAmount);
+        map.put("formatted_amount", this.formattedAmount);
         map.put("currency", this.currency);
         map.putAll(super.getExportedData());
 

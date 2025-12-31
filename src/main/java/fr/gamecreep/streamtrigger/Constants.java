@@ -7,4 +7,5 @@ import lombok.NoArgsConstructor;
 public class Constants {
     public static final String WEBSOCKET_ENDPOINT = "wss://sockets.streamlabs.com";
     public static final String WEBSITE_URL = "https://streamtrigger.netlify.app";
+    public static final String API_URL = "https://streamtrigger.netlify.app/api/v1";
 }
