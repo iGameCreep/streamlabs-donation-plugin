@@ -1,10 +1,9 @@
 package fr.gamecreep.streamtrigger.stream.entities.actions;
 
-import fr.gamecreep.streamtrigger.stream.entities.actions.core.ACommonActionData;
 import lombok.Getter;
 
 @Getter
-public class CommandExecData implements ACommonActionData {
+public class CommandExecData {
 
     private final String command;
 

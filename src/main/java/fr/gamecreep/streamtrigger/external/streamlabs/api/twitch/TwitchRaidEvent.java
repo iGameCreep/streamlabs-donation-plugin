@@ -19,12 +19,12 @@ public class TwitchRaidEvent extends ACommonEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "raiders", String.valueOf(this.raiders),
-                "viewers", String.valueOf(this.viewers)
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("raiders", String.valueOf(this.raiders));
+        map.put("viewers", String.valueOf(this.viewers));
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

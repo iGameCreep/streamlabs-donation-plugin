@@ -16,21 +16,21 @@ public class TwitchBitsEvent extends AMoneyEvent {
     public TwitchBitsEvent(String username,
                            String message,
                            String emotes,
-                           int amount,
+                           double amount,
                            String currency) {
         super(username, message, amount, getFormattedBitsAmount(amount, currency), currency);
-        this.emotes = emotes != null ? emotes : "null";
+        this.emotes = emotes;
     }
 
-     static String getFormattedBitsAmount(int amount, String currency) {
+     static String getFormattedBitsAmount(double amount, String currency) {
          if (amount < 0) {
              amount = 0;
          }
 
          // Example: 500 bits => $5.00 (if 1 bit = 0.01 USD)
-         final double dollarAmount = amount * 0.01;
+         double dollarAmount = amount * 0.01;
 
-         final NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
+         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US);
          currencyFormatter.setCurrency(Currency.getInstance(currency));
 
          return currencyFormatter.format(dollarAmount);
@@ -38,11 +38,11 @@ public class TwitchBitsEvent extends AMoneyEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "emotes", this.emotes
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("emotes", this.emotes);
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

@@ -10,7 +10,7 @@ public class YoutubeSuperChatEvent extends AMoneyEvent {
 
     public YoutubeSuperChatEvent(String username,
                                  String comment,
-                                 int amount,
+                                 double amount,
                                  String displayString,
                                  String currency,
                                  int messageType) {
@@ -20,11 +20,11 @@ public class YoutubeSuperChatEvent extends AMoneyEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "message_type", String.valueOf(messageType)
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("message_type", String.valueOf(messageType));
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

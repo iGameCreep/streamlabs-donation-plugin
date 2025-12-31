@@ -8,7 +8,7 @@ public class StreamLabsDonationEvent extends ADonationEvent {
     public StreamLabsDonationEvent(String username,
                                    String message,
                                    String to,
-                                   int amount, String formattedAmount, String currency) {
+                                   double amount, String formattedAmount, String currency) {
         super(username, message, to, amount, formattedAmount, currency);
     }
 }

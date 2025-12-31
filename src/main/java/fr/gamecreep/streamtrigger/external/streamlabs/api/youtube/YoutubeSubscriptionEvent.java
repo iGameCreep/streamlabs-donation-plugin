@@ -29,14 +29,14 @@ public class YoutubeSubscriptionEvent extends ASubscriptionEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "level", String.valueOf(this.level),
-                "level_name", this.levelName,
-                "membership_level", String.valueOf(this.membershipLevel),
-                "membership_level_name", this.membershipLevelName
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("level", String.valueOf(this.level));
+        map.put("level_name", this.levelName);
+        map.put("membership_level", String.valueOf(this.membershipLevel));
+        map.put("membership_level_name", this.membershipLevelName);
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

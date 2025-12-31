@@ -16,9 +16,11 @@ public abstract class AMessageEvent extends ACommonEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of("message", this.message));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("message", this.message);
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

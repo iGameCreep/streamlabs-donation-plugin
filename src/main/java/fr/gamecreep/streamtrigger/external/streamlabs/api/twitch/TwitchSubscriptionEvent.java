@@ -34,14 +34,14 @@ public class TwitchSubscriptionEvent extends ASubscriptionEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "streak_months", String.valueOf(this.streakMonths),
-                "sub_type", this.subType,
-                "sub_plan", this.subPlan,
-                "sub_plan_name", this.subPlanName
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("streak_months", String.valueOf(this.streakMonths));
+        map.put("sub_type", this.subType);
+        map.put("sub_plan", this.subPlan);
+        map.put("sub_plan_name", this.subPlanName);
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

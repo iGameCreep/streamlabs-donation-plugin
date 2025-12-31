@@ -1,6 +1,5 @@
 package fr.gamecreep.streamtrigger.stream.entities;
 
-import fr.gamecreep.streamtrigger.stream.entities.enums.Action;
 import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEventFor;
 import fr.gamecreep.streamtrigger.external.streamlabs.enums.EStreamLabsEventType;
 import lombok.AllArgsConstructor;
@@ -28,7 +27,6 @@ public class StreamEvent {
     @AllArgsConstructor
     @Getter
     public static class StreamEventAction {
-        private final Action action;
         private final String data;
     }
 }

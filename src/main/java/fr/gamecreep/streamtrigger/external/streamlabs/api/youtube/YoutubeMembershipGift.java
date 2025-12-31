@@ -31,15 +31,15 @@ public class YoutubeMembershipGift extends AMessageEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "amount", String.valueOf(this.amout),
-                "level", String.valueOf(this.level),
-                "level_name", this.levelName,
-                "gift_memberships_level_name", this.giftMembershipsLevelName,
-                "gift_memberships_count", String.valueOf(this.giftMembershipsCount)
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("amount", String.valueOf(this.amout));
+        map.put("level", String.valueOf(this.level));
+        map.put("level_name", this.levelName);
+        map.put("gift_memberships_level_name", this.giftMembershipsLevelName);
+        map.put("gift_memberships_count", String.valueOf(this.giftMembershipsCount));
         map.putAll(super.getExportedData());
+
         return map;
     }
 }

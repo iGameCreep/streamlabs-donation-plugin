@@ -31,6 +31,7 @@ public class StreamEventHandler {
         );
     }
 
+    // TODO: Refactor with new configs
     public void handleStreamEvent(EStreamLabsEvent event, ACommonEvent eventData) {
         StreamEvent.StreamEventData data;
         for (StreamEvent streamEvent : this.streamEvents) {

@@ -53,7 +53,7 @@ public final class StreamTrigger extends JavaPlugin {
     @Override
     public void onDisable() {
         if (this.webSocketClient != null) {
-            this.webSocketClient.endWebSocket(true);
+            this.webSocketClient.endWebSocket();
         }
         this.getLogger().info("Stopped WebSocket and plugin !");
     }

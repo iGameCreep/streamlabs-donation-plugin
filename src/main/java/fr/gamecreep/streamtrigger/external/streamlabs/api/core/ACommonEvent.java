@@ -9,7 +9,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 public abstract class ACommonEvent {
-    @SerializedName("name")
+    @SerializedName(value = "name", alternate = { "from" })
     private final String username;
 
     public Map<String, String> getExportedData() {

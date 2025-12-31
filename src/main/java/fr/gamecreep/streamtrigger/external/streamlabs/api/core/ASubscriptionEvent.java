@@ -18,11 +18,11 @@ public abstract class ASubscriptionEvent extends AMessageEvent {
 
     @Override
     public Map<String, String> getExportedData() {
-        Map<String, String> map = new HashMap<>(Map.of(
-                "months", String.valueOf(this.months)
-        ));
+        Map<String, String> map = new HashMap<>();
 
+        map.put("months", String.valueOf(this.months));
         map.putAll(super.getExportedData());
+
         return map;
     }
 }
